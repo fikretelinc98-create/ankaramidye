@@ -1,134 +1,213 @@
-/* =====================================
-   Ankara Midye - script.js
-===================================== */
+// Yukarı Çık Butonu
 
-/* ========= AYARLAR ========= */
-/* Sadece bu numarayı değiştirmen yeterli */
+const topBtn = document.getElementById("topBtn");
 
-const CONFIG = {
-    phone: "905462805374"
-};
+window.onscroll = function () {
 
-/* ========= LİNKLER ========= */
+if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
 
-document.addEventListener("DOMContentLoaded", () => {
+topBtn.style.display = "block";
 
-    const tel = "tel:+" + CONFIG.phone;
-    const wa = "https://wa.me/" + CONFIG.phone;
-    const sms = "sms:+" + CONFIG.phone;
+} else {
 
-    function setLink(id, href) {
-        const el = document.getElementById(id);
-        if (el) el.href = href;
-    }
-
-    setLink("phoneLink", tel);
-    setLink("whatsappLink", wa);
-    setLink("smsLink", sms);
-
-    setLink("floatingPhone", tel);
-    setLink("floatingWhatsapp", wa);
-    setLink("floatingSms", sms);
-
-    /* ========= LIGHTBOX ========= */
-
-    const lightbox = document.getElementById("lightbox");
-    const lightboxImage = document.getElementById("lightboxImage");
-    const closeLightbox = document.getElementById("closeLightbox");
-
-    document.querySelectorAll(".gallery-grid img").forEach(img => {
-
-        img.addEventListener("click", () => {
-
-            if (!lightbox || !lightboxImage) return;
-
-            lightbox.style.display = "flex";
-            lightboxImage.src = img.src;
-            lightboxImage.alt = img.alt;
-
-        });
-
-    });
-
-    if (closeLightbox) {
-
-        closeLightbox.onclick = () => {
-
-            lightbox.style.display = "none";
-
-        };
-
-    }
-
-    if (lightbox) {
-
-        lightbox.onclick = function(e) {
-
-            if (e.target === lightbox) {
-
-                lightbox.style.display = "none";
-
-            }
-
-        }
-
-    }
-
-    /* ========= SCROLL ANİMASYONU ========= */
-
-    const observer = new IntersectionObserver((entries) => {
-
-        entries.forEach(entry => {
-
-            if (entry.isIntersecting) {
-
-                entry.target.classList.add("show");
-
-            }
-
-        });
-
-    }, {
-        threshold: 0.2
-    });
-
-    document.querySelectorAll(".card,.gallery-grid img,.contact-item").forEach(item => {
-
-        item.classList.add("hidden");
-
-        observer.observe(item);
-
-    });
-
-});
-
-/* ========= HEADER GÖLGESİ ========= */
-
-window.addEventListener("scroll", () => {
-
-    const header = document.querySelector("header");
-
-    if (!header) return;
-
-    if (window.scrollY > 40) {
-
-        header.style.boxShadow = "0 8px 25px rgba(0,0,0,.35)";
-
-    } else {
-
-        header.style.boxShadow = "none";
-
-    }
-
-});
-
-/* ========= FOOTER YILI ========= */
-
-const copy = document.querySelector(".copyright");
-
-if (copy) {
-
-    copy.innerHTML =
-        "© " + new Date().getFullYear() + " Ankara Midye - Tüm Hakları Saklıdır.";
+topBtn.style.display = "none";
 
 }
+
+};
+
+topBtn.onclick = function () {
+
+window.scrollTo({
+
+top: 0,
+
+behavior: "smooth"
+
+});
+
+};
+
+// Sayfa Açılış Animasyonu
+
+const sections = document.querySelectorAll("section");
+
+const observer = new IntersectionObserver((entries) => {
+
+entries.forEach((entry) => {
+
+if (entry.isIntersecting) {
+
+entry.target.style.opacity = "1";
+
+entry.target.style.transform = "translateY(0)";
+
+}
+
+});
+
+});
+
+sections.forEach((section) => {
+
+section.style.opacity = "0";
+
+section.style.transform = "translateY(50px)";
+
+section.style.transition = "all 0.8s ease";
+
+observer.observe(section);
+
+});
+// Galeri Resimlerini Büyütme
+
+const images = document.querySelectorAll(".gallery-grid img");
+
+images.forEach((img)=>{
+
+img.addEventListener("click",()=>{
+
+const overlay=document.createElement("div");
+
+overlay.style.position="fixed";
+overlay.style.top="0";
+overlay.style.left="0";
+overlay.style.width="100%";
+overlay.style.height="100%";
+overlay.style.background="rgba(0,0,0,.9)";
+overlay.style.display="flex";
+overlay.style.justifyContent="center";
+overlay.style.alignItems="center";
+overlay.style.zIndex="9999";
+
+const big=document.createElement("img");
+
+big.src=img.src;
+big.style.maxWidth="90%";
+big.style.maxHeight="90%";
+big.style.borderRadius="20px";
+big.style.boxShadow="0 0 40px black";
+
+overlay.appendChild(big);
+
+overlay.onclick=()=>{
+
+overlay.remove();
+
+}
+
+document.body.appendChild(overlay);
+
+});
+
+});
+
+
+// Buton Animasyonu
+
+const buttons=document.querySelectorAll(".btn");
+
+buttons.forEach((btn)=>{
+
+btn.addEventListener("mouseenter",()=>{
+
+btn.style.transform="scale(1.08)";
+
+});
+
+btn.addEventListener("mouseleave",()=>{
+
+btn.style.transform="scale(1)";
+
+});
+
+});
+
+
+// Hero Resmine Hareket Efekti
+
+const hero=document.querySelector(".hero-image img");
+
+if(hero){
+
+window.addEventListener("mousemove",(e)=>{
+
+const x=(window.innerWidth/2-e.clientX)/40;
+const y=(window.innerHeight/2-e.clientY)/40;
+
+hero.style.transform=`rotateY(${x}deg) rotateX(${-y}deg)`;
+
+});
+
+}
+// Sayfa Yüklenme Efekti
+
+window.addEventListener("load",()=>{
+
+document.body.style.opacity="1";
+
+});
+
+document.body.style.opacity="0";
+
+document.body.style.transition="opacity .8s";
+
+
+// Navbar Arkaplanı
+
+const header=document.querySelector("header");
+
+window.addEventListener("scroll",()=>{
+
+if(window.scrollY>80){
+
+header.style.background="rgba(0,0,0,.95)";
+
+}else{
+
+header.style.background="rgba(0,0,0,.75)";
+
+}
+
+});
+
+
+// Resimlere Fade Efekti
+
+const galleryImages=document.querySelectorAll(".gallery-grid img");
+
+galleryImages.forEach((img)=>{
+
+img.style.opacity="0";
+
+});
+
+const imageObserver=new IntersectionObserver((entries)=>{
+
+entries.forEach((entry)=>{
+
+if(entry.isIntersecting){
+
+entry.target.style.opacity="1";
+
+entry.target.style.transform="translateY(0)";
+
+}
+
+});
+
+});
+
+galleryImages.forEach((img)=>{
+
+img.style.transform="translateY(40px)";
+img.style.transition=".7s";
+
+imageObserver.observe(img);
+
+});
+
+
+// Konsola Bilgi
+
+console.log("Ankara Midye | Site başarıyla yüklendi.");
