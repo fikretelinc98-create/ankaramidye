@@ -1,36 +1,41 @@
-// Loader
-window.addEventListener("load", () => {
-    const loader = document.querySelector(".loader");
+window.addEventListener("load",()=>{
 
-    setTimeout(() => {
-        loader.style.opacity = "0";
-        loader.style.visibility = "hidden";
-    }, 2500);
-});
+const loader=document.querySelector(".loader");
 
-// Navbar Arka Planı
-window.addEventListener("scroll", () => {
+setTimeout(()=>{
 
-    const header = document.querySelector("header");
+loader.style.opacity="0";
+loader.style.visibility="hidden";
 
-    if (window.scrollY > 80) {
-        header.style.background = "rgba(0,0,0,.92)";
-        header.style.backdropFilter = "blur(18px)";
-    } else {
-        header.style.background = "rgba(0,0,0,.55)";
-    }
+},2200);
 
 });
 
-// Fade Animasyonu
-const observer = new IntersectionObserver((entries)=>{
+window.addEventListener("scroll",()=>{
+
+const header=document.querySelector("header");
+
+if(window.scrollY>50){
+
+header.style.background="rgba(0,0,0,.92)";
+header.style.backdropFilter="blur(20px)";
+
+}else{
+
+header.style.background="rgba(0,0,0,.55)";
+
+}
+
+});
+
+const observer=new IntersectionObserver((entries)=>{
 
 entries.forEach(entry=>{
 
 if(entry.isIntersecting){
 
 entry.target.style.opacity="1";
-entry.target.style.transform="translateY(0px)";
+entry.target.style.transform="translateY(0)";
 
 }
 
@@ -38,53 +43,68 @@ entry.target.style.transform="translateY(0px)";
 
 },{threshold:.15});
 
-document.querySelectorAll(".feature-box,.gallery img,.about,.contact").forEach(item=>{
+document.querySelectorAll(".feature,.stats div,.gallery-grid img,.about,.review-card,.contact").forEach(el=>{
 
-item.style.opacity="0";
+el.style.opacity="0";
 
-item.style.transform="translateY(60px)";
+el.style.transform="translateY(60px)";
 
-item.style.transition=".8s";
+el.style.transition=".8s";
 
-observer.observe(item);
-
-});
-
-// Galeri Hover Efekti
-document.querySelectorAll(".gallery img").forEach(img=>{
-
-img.addEventListener("mousemove",()=>{
-
-img.style.transform="scale(1.08) rotate(1deg)";
+observer.observe(el);
 
 });
 
-img.addEventListener("mouseleave",()=>{
+document.querySelectorAll(".gallery-grid img").forEach(img=>{
 
-img.style.transform="scale(1)";
+img.addEventListener("click",()=>{
+
+const overlay=document.createElement("div");
+
+overlay.style.position="fixed";
+overlay.style.top="0";
+overlay.style.left="0";
+overlay.style.width="100%";
+overlay.style.height="100%";
+overlay.style.background="rgba(0,0,0,.95)";
+overlay.style.display="flex";
+overlay.style.justifyContent="center";
+overlay.style.alignItems="center";
+overlay.style.zIndex="999999";
+
+const image=document.createElement("img");
+
+image.src=img.src;
+
+image.style.maxWidth="90%";
+image.style.maxHeight="90%";
+image.style.borderRadius="20px";
+
+overlay.appendChild(image);
+
+overlay.onclick=()=>overlay.remove();
+
+document.body.appendChild(overlay);
 
 });
 
 });
 
-// Hero Yazısı
-const heroTitle=document.querySelector(".hero h1");
+const hero=document.querySelector(".hero h1");
 
-let scale=1;
+let buyuk=true;
 
 setInterval(()=>{
 
-scale=scale===1?1.02:1;
+hero.style.transform=buyuk?"scale(1.03)":"scale(1)";
 
-heroTitle.style.transform=`scale(${scale})`;
+buyuk=!buyuk;
 
-},1200);
+},1500);
 
-// Sağ Tık Engeli
 document.addEventListener("contextmenu",e=>e.preventDefault());
 
-// F12 Engeli
-document.addEventListener("keydown",function(e){
+document.addEventListener("keydown",e=>{
 
 if(e.key==="F12"){
 
@@ -93,123 +113,95 @@ e.preventDefault();
 }
 
 });
-// Sayfa Yukarı Çık Butonu
-const topButton = document.createElement("div");
+// Butonlara Tıklama Efekti
+document.querySelectorAll("a").forEach(btn=>{
 
-topButton.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
+btn.addEventListener("click",function(){
 
-topButton.className = "top-button";
-
-document.body.appendChild(topButton);
-
-topButton.style.position = "fixed";
-topButton.style.left = "20px";
-topButton.style.bottom = "20px";
-topButton.style.width = "60px";
-topButton.style.height = "60px";
-topButton.style.borderRadius = "50%";
-topButton.style.background = "#d4af37";
-topButton.style.color = "#000";
-topButton.style.display = "flex";
-topButton.style.alignItems = "center";
-topButton.style.justifyContent = "center";
-topButton.style.cursor = "pointer";
-topButton.style.fontSize = "24px";
-topButton.style.boxShadow = "0 0 25px rgba(212,175,55,.5)";
-topButton.style.opacity = "0";
-topButton.style.transition = ".4s";
-topButton.style.zIndex = "9999";
-
-window.addEventListener("scroll", () => {
-
-    if (window.scrollY > 500) {
-
-        topButton.style.opacity = "1";
-
-    } else {
-
-        topButton.style.opacity = "0";
-
-    }
-
-});
-
-topButton.onclick = () => {
-
-    window.scrollTo({
-
-        top: 0,
-
-        behavior: "smooth"
-
-    });
-
-};
-
-// Buton Parlama Efekti
-
-setInterval(() => {
-
-document.querySelectorAll(".btn,.contact-btn,.floating-phone,.floating-whatsapp").forEach(el=>{
-
-el.animate([
+this.animate([
 
 {transform:"scale(1)"},
 
-{transform:"scale(1.06)"},
+{transform:"scale(.92)"},
 
 {transform:"scale(1)"}
 
 ],{
 
-duration:1200
+duration:250
 
 });
 
 });
 
-},2500);
+});
 
-// Video Hızını Ayarla
-
+// Video Yavaş Oynatma
 const video=document.querySelector("video");
 
 if(video){
 
-video.playbackRate=0.8;
+video.playbackRate=.85;
 
 }
+
+// Sayfa Yukarı Çık Butonu
+
+const topBtn=document.createElement("div");
+
+topBtn.innerHTML='<i class="fa-solid fa-arrow-up"></i>';
+
+topBtn.className="topButton";
+
+document.body.appendChild(topBtn);
+
+topBtn.style.position="fixed";
+topBtn.style.left="20px";
+topBtn.style.bottom="20px";
+topBtn.style.width="60px";
+topBtn.style.height="60px";
+topBtn.style.borderRadius="50%";
+topBtn.style.background="#d4af37";
+topBtn.style.color="#000";
+topBtn.style.display="flex";
+topBtn.style.justifyContent="center";
+topBtn.style.alignItems="center";
+topBtn.style.fontSize="24px";
+topBtn.style.cursor="pointer";
+topBtn.style.boxShadow="0 0 25px rgba(212,175,55,.5)";
+topBtn.style.opacity="0";
+topBtn.style.transition=".4s";
+topBtn.style.zIndex="99999";
+
+window.addEventListener("scroll",()=>{
+
+if(window.scrollY>500){
+
+topBtn.style.opacity="1";
+
+}else{
+
+topBtn.style.opacity="0";
+
+}
+
+});
+
+topBtn.onclick=()=>{
+
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
+
+});
+
+};
 
 // Konsol Mesajı
 
 console.log("Ankara Midye Premium Website");
-console.log("© 2026 Ankara Midye");
-document.querySelectorAll(".counter").forEach(counter=>{
-
-const hedef=+counter.dataset.target;
-
-let sayi=0;
-
-const arttir=()=>{
-
-const artis=Math.ceil(hedef/80);
-
-sayi+=artis;
-
-if(sayi<hedef){
-
-counter.innerText=sayi;
-
-requestAnimationFrame(arttir);
-
-}else{
-
-counter.innerText=hedef;
-
-}
-
-};
-
-arttir();
-
-});
+console.log("Telefon: 0546 280 53 74");
+console.log("Instagram: @midyekolik47");
+console.log("TikTok: @midyekolik47");
