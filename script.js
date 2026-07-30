@@ -184,3 +184,32 @@ video.playbackRate=0.8;
 
 console.log("Ankara Midye Premium Website");
 console.log("© 2026 Ankara Midye");
+document.querySelectorAll(".counter").forEach(counter=>{
+
+const hedef=+counter.dataset.target;
+
+let sayi=0;
+
+const arttir=()=>{
+
+const artis=Math.ceil(hedef/80);
+
+sayi+=artis;
+
+if(sayi<hedef){
+
+counter.innerText=sayi;
+
+requestAnimationFrame(arttir);
+
+}else{
+
+counter.innerText=hedef;
+
+}
+
+};
+
+arttir();
+
+});
